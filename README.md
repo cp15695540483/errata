@@ -18,7 +18,7 @@ of its implementation.
 ` agree | implemented |
 | `LineIndex::line_start`, `line_count`, `byte_length` | implemented |
 | Diagnostic model: severity, code, labelled spans, notes | implemented |
-| Display width (CJK, emoji, tabs) in columns | planned |
+| Display width: control 0, combining 0, CJK and emoji 2, tab stops | implemented |
 | ANSI snippet renderer | planned |
 | HTML snippet renderer | planned |
 | `errata` CLI | planned |

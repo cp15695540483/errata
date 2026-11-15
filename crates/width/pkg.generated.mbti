@@ -1,0 +1,19 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "cp15695540483/errata/crates/width"
+
+// Values
+pub fn codepoint_width(Int32) -> Int32
+
+pub fn column_after(Bytes, Int32, Int32, Int32) -> Int32
+
+pub fn decode_utf8(Bytes, Int32) -> (Int32, Int32)
+
+pub fn text_width(String) -> Int32
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits

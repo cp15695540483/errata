@@ -7,6 +7,10 @@ Keep a Changelog and the project uses Semantic Versioning.
 
 ### Added
 
+- `crates/width`: `decode_utf8`, `codepoint_width`, `column_after` and
+  `text_width`. Control characters and combining marks take no column, CJK and
+  emoji take two, and a tab jumps to the next multiple of the tab width.
+
 - `crates/diagnostic`: `Span`, `Label` (focused or context) and an immutable
   `Diagnostic` carrying severity, code, headline, labels and notes. Builders copy
   the array they extend, so a derived diagnostic never mutates its source.
