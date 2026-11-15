@@ -8,6 +8,10 @@ pub fn column_after(Bytes, Int32, Int32, Int32) -> Int32
 
 pub fn decode_utf8(Bytes, Int32) -> (Int32, Int32)
 
+pub fn expand_tabs(String, Int32) -> String
+
+pub fn prefix_width(String, Int32, Int32) -> Int32
+
 pub fn text_width(String) -> Int32
 
 // Errors

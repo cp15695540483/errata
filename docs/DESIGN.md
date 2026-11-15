@@ -14,7 +14,7 @@ test.
 | `crates/span` | line table, byte offset to `(line, column)`, line starts | implemented |
 | `crates/diagnostic` | severity ranks, code, labelled spans, notes; owns the `Span` range type | implemented |
 | `crates/width` | UTF-8 decoding, code point display width, tab expansion, column advance | implemented |
-| `crates/render-ansi` | snippet layout and ANSI styling | planned |
+| `crates/render_ansi` | plain-text snippet layout: header, code line, caret, notes | implemented |
 | `crates/render-html` | the same layout emitted as HTML with CSS classes | planned |
 | `cmd/errata` | CLI wrapper | planned |
 

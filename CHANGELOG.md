@@ -7,6 +7,11 @@ Keep a Changelog and the project uses Semantic Versioning.
 
 ### Added
 
+- `crates/render_ansi`: render a diagnostic against its source into plain text.
+  A header carries severity and code, every label renders its source line with an
+  expanded-tab copy and a caret aligned by display column, and notes follow as
+  `= note:` lines. Nine white-box tests pin the exact output.
+
 - `crates/width`: `decode_utf8`, `codepoint_width`, `column_after` and
   `text_width`. Control characters and combining marks take no column, CJK and
   emoji take two, and a tab jumps to the next multiple of the tab width.

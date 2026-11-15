@@ -21,6 +21,8 @@ pub struct Location {
   line : Int32
   column : Int32
 }
+pub fn Location::column_number(Self) -> Int32
+pub fn Location::line_number(Self) -> Int32
 
 // Type aliases
 

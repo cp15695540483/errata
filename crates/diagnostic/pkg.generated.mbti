@@ -55,7 +55,9 @@ pub struct Span {
 }
 pub fn Span::byte_length(Self) -> Int32
 pub fn Span::contains(Self, Int32) -> Bool
+pub fn Span::end_offset(Self) -> Int32
 pub fn Span::new(Int32, Int32) -> Self
+pub fn Span::start_offset(Self) -> Int32
 
 // Type aliases
 

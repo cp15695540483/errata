@@ -19,7 +19,7 @@ of its implementation.
 | `LineIndex::line_start`, `line_count`, `byte_length` | implemented |
 | Diagnostic model: severity, code, labelled spans, notes | implemented |
 | Display width: control 0, combining 0, CJK and emoji 2, tab stops | implemented |
-| ANSI snippet renderer | planned |
+| Plain-text renderer: header, code line, caret, notes | implemented |
 | HTML snippet renderer | planned |
 | `errata` CLI | planned |
 
