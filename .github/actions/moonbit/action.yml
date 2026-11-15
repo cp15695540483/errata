@@ -1,0 +1,16 @@
+name: Set up MoonBit
+description: Install the MoonBit toolchain and refresh the package registry index.
+runs:
+  using: composite
+  steps:
+    - name: Install toolchain
+      shell: bash
+      run: |
+        curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash
+        echo "$HOME/.moon/bin" >> "$GITHUB_PATH"
+    - name: Report toolchain versions
+      shell: bash
+      run: moon version --all
+    - name: Refresh registry index
+      shell: bash
+      run: moon update
