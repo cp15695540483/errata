@@ -1,0 +1,7 @@
+import {
+  "cp15695540483/errata/crates/cli",
+  "cp15695540483/errata/crates/render_ansi",
+  "moonbitlang/core/env",
+}
+
+pkgtype(kind: "executable")

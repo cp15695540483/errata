@@ -57,6 +57,22 @@ offset equal to the buffer length is the position just past the last byte.
 The file name is always a base name: a compiler path is absolute, and a
 snippet must not repeat a machine directory.
 
+## Command line
+
+The executable takes the record the toolchain prints and the source text:
+
+    moon run cmd/errata -- '{"level":"error",...}' 'let y = x + 1'
+
+Output:
+
+    error: Expr Type Mismatch
+      ╭─[ bad.mbt:1:9 ]
+    1 │ let y = x + 1
+      │         ^ Expr Type Mismatch
+
+The file name in the header is always a base name, because a compiler path is
+absolute and a snippet must not repeat a machine directory.
+
 ## Documentation
 
 - [docs/DESIGN.md](docs/DESIGN.md) - layering, invariants and roadmap
