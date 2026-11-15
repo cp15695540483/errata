@@ -20,7 +20,7 @@ of its implementation.
 | Diagnostic model: severity, code, labelled spans, notes | implemented |
 | Display width: control 0, combining 0, CJK and emoji 2, tab stops | implemented |
 | Plain-text renderer: header, code line, caret, notes | implemented |
-| HTML snippet renderer | planned |
+| HTML renderer: escaped markup wrapped around the plain-text snippet | implemented |
 | `errata` CLI | planned |
 
 ## Quick start

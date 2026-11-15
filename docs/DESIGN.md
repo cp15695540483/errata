@@ -15,7 +15,7 @@ test.
 | `crates/diagnostic` | severity ranks, code, labelled spans, notes; owns the `Span` range type | implemented |
 | `crates/width` | UTF-8 decoding, code point display width, tab expansion, column advance | implemented |
 | `crates/render_ansi` | plain-text snippet layout: header, code line, caret, notes | implemented |
-| `crates/render-html` | the same layout emitted as HTML with CSS classes | planned |
+| `crates/render_html` | HTML figure around the plain-text snippet, markup escaped | implemented |
 | `cmd/errata` | CLI wrapper | planned |
 
 A crate is created only together with its first implemented feature. Planned

@@ -7,6 +7,10 @@ Keep a Changelog and the project uses Semantic Versioning.
 
 ### Added
 
+- `crates/render_html`: render a diagnostic as an HTML figure. The snippet is the
+  plain-text layout with markup escaped, so a source line containing an angle
+  bracket or an ampersand cannot break the page; notes stay inside the snippet.
+
 - `crates/render_ansi`: render a diagnostic against its source into plain text.
   A header carries severity and code, every label renders its source line with an
   expanded-tab copy and a caret aligned by display column, and notes follow as
