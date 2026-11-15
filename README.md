@@ -43,6 +43,20 @@ match index.locate(9) {
 `locate` accepts every offset from `0` through `byte_length()` inclusive; the
 offset equal to the buffer length is the position just past the last byte.
 
+## Runnable example
+
+`examples/render_demo` renders one diagnostic and prints the snippet:
+
+    moon run examples/render_demo
+
+    error: unknown type
+      ╭─[ demo.mbt:1:9 ]
+    1 │ let y = x + 1
+      │         ^ unknown type
+
+The file name is always a base name: a compiler path is absolute, and a
+snippet must not repeat a machine directory.
+
 ## Documentation
 
 - [docs/DESIGN.md](docs/DESIGN.md) - layering, invariants and roadmap

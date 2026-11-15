@@ -7,6 +7,10 @@ Keep a Changelog and the project uses Semantic Versioning.
 
 ### Added
 
+- `examples/render_demo`: a runnable program that renders one diagnostic.
+  Its real output is checked in as `examples/render_demo/expected.txt`, so the
+  documented snippet cannot drift from what the renderer prints.
+
 - `crates/cli`: read the compiler JSON diagnostic line format. `field` decodes a
   string or number field, `display_path` keeps only the file name so a snippet
   never repeats a machine directory, `span_from_loc` turns `line:col-line:col`
