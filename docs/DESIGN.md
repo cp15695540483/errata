@@ -17,7 +17,7 @@ test.
 | `crates/render_ansi` | plain-text snippet layout: header, code line, caret, notes | implemented |
 | `crates/render_html` | HTML figure around the plain-text snippet, markup escaped | implemented |
 | `crates/cli` | parse a compiler JSON diagnostic line into a rendered snippet | implemented |
-| `cmd/errata` | CLI wrapper | planned |
+| `cmd/errata` | CLI executable: renders one compiler record and prints the snippet | implemented |
 
 A crate is created only together with its first implemented feature. Planned
 rows are intent, not code, and no empty package exists in the tree.

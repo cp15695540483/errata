@@ -22,7 +22,7 @@ of its implementation.
 | Plain-text renderer: header, code line, caret, notes | implemented |
 | HTML renderer: escaped markup wrapped around the plain-text snippet | implemented |
 | Compiler JSON adapter: parse one diagnostic line into a rendered snippet | implemented |
-| `errata` CLI | planned |
+| `errata` CLI: render one compiler record, file name only | implemented |
 
 ## Quick start
 
