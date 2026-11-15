@@ -21,6 +21,7 @@ of its implementation.
 | Display width: control 0, combining 0, CJK and emoji 2, tab stops | implemented |
 | Plain-text renderer: header, code line, caret, notes | implemented |
 | HTML renderer: escaped markup wrapped around the plain-text snippet | implemented |
+| Compiler JSON adapter: parse one diagnostic line into a rendered snippet | implemented |
 | `errata` CLI | planned |
 
 ## Quick start

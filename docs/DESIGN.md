@@ -16,6 +16,7 @@ test.
 | `crates/width` | UTF-8 decoding, code point display width, tab expansion, column advance | implemented |
 | `crates/render_ansi` | plain-text snippet layout: header, code line, caret, notes | implemented |
 | `crates/render_html` | HTML figure around the plain-text snippet, markup escaped | implemented |
+| `crates/cli` | parse a compiler JSON diagnostic line into a rendered snippet | implemented |
 | `cmd/errata` | CLI wrapper | planned |
 
 A crate is created only together with its first implemented feature. Planned

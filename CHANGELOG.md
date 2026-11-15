@@ -7,6 +7,11 @@ Keep a Changelog and the project uses Semantic Versioning.
 
 ### Added
 
+- `crates/cli`: read the compiler JSON diagnostic line format. `field` decodes a
+  string or number field, `display_path` keeps only the file name so a snippet
+  never repeats a machine directory, `span_from_loc` turns `line:col-line:col`
+  into a byte span and `render_json` produces the snippet.
+
 - `crates/render_html`: render a diagnostic as an HTML figure. The snippet is the
   plain-text layout with markup escaped, so a source line containing an angle
   bracket or an ampersand cannot break the page; notes stay inside the snippet.
