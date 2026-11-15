@@ -1,0 +1,62 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "cp15695540483/errata/crates/diagnostic"
+
+// Values
+pub fn severity_error() -> Int32
+
+pub fn severity_help() -> Int32
+
+pub fn severity_name(Int32) -> String
+
+pub fn severity_note() -> Int32
+
+pub fn severity_warning() -> Int32
+
+// Errors
+
+// Types and methods
+pub struct Diagnostic {
+  severity : Int32
+  code : String
+  message : String
+  labels : Array[Label]
+  notes : Array[String]
+}
+pub fn Diagnostic::code_or_empty(Self) -> String
+pub fn Diagnostic::error(String) -> Self
+pub fn Diagnostic::headline(Self) -> String
+pub fn Diagnostic::help(String) -> Self
+pub fn Diagnostic::label_at(Self, Int32) -> Label?
+pub fn Diagnostic::label_count(Self) -> Int32
+pub fn Diagnostic::note(String) -> Self
+pub fn Diagnostic::note_at(Self, Int32) -> String?
+pub fn Diagnostic::note_count(Self) -> Int32
+pub fn Diagnostic::primary_label(Self) -> Label?
+pub fn Diagnostic::severity_rank(Self) -> Int32
+pub fn Diagnostic::warning(String) -> Self
+pub fn Diagnostic::with_code(Self, String) -> Self
+pub fn Diagnostic::with_label(Self, Label) -> Self
+pub fn Diagnostic::with_note(Self, String) -> Self
+
+pub struct Label {
+  span : Span
+  message : String
+  focused : Bool
+}
+pub fn Label::context(Span, String) -> Self
+pub fn Label::focused(Span, String) -> Self
+pub fn Label::is_focused(Self) -> Bool
+pub fn Label::message_text(Self) -> String
+pub fn Label::span_view(Self) -> Span
+
+pub struct Span {
+  start : Int32
+  end : Int32
+}
+pub fn Span::byte_length(Self) -> Int32
+pub fn Span::contains(Self, Int32) -> Bool
+pub fn Span::new(Int32, Int32) -> Self
+
+// Type aliases
+
+// Traits

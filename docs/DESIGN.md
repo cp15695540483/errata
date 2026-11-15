@@ -12,6 +12,7 @@ test.
 | Directory | Responsibility | State |
 | --- | --- | --- |
 | `crates/span` | line table, byte offset to `(line, column)`, line starts | implemented |
+| `crates/diagnostic` | severity ranks, code, labelled spans, notes; owns the `Span` range type | implemented |
 | `crates/width` | display width of a code point (East Asian width, combining marks, tabs) | planned |
 | `crates/render-ansi` | snippet layout and ANSI styling | planned |
 | `crates/render-html` | the same layout emitted as HTML with CSS classes | planned |

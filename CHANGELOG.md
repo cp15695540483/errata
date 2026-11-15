@@ -7,6 +7,10 @@ Keep a Changelog and the project uses Semantic Versioning.
 
 ### Added
 
+- `crates/diagnostic`: `Span`, `Label` (focused or context) and an immutable
+  `Diagnostic` carrying severity, code, headline, labels and notes. Builders copy
+  the array they extend, so a derived diagnostic never mutates its source.
+
 - `crates/span`: `LineIndex` builds a line table from a UTF-8 buffer and maps
   every valid byte offset to a 1-based `Location { line, column }`; `
 ` and

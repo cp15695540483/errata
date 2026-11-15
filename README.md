@@ -17,6 +17,7 @@ of its implementation.
 ` and `
 ` agree | implemented |
 | `LineIndex::line_start`, `line_count`, `byte_length` | implemented |
+| Diagnostic model: severity, code, labelled spans, notes | implemented |
 | Display width (CJK, emoji, tabs) in columns | planned |
 | ANSI snippet renderer | planned |
 | HTML snippet renderer | planned |
