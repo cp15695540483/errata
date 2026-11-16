@@ -33,6 +33,12 @@ moon check
 moon test
 ```
 
+Or add the released package and call the API from your own code:
+
+```bash
+moon add cp15695540483/errata
+```
+
 ```moonbit
 let index = @span.LineIndex::from_string("line one
 line two")
