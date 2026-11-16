@@ -1,0 +1,2 @@
+moon run cmd/errata -- '{"level":"error","path":"/home/somebody/src/bad.mbt","loc":"1:9-1:10","message":"Expr Type Mismatch"}' 'let y = x + 1'
+moon test --deny-warn

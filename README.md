@@ -57,6 +57,15 @@ offset equal to the buffer length is the position just past the last byte.
 The file name is always a base name: a compiler path is absolute, and a
 snippet must not repeat a machine directory.
 
+## Demo
+
+![Demo](docs/demo.gif)
+
+The animation shows `cmd/errata` rendering one compiler record and the test
+suite summary. The captured output and the two command lines live in
+[`tools/demo/`](tools/demo); `tools/make_demo.py` rebuilds the GIF from them,
+so the frames cannot drift from what the code prints.
+
 ## Command line
 
 The executable takes the record the toolchain prints and the source text:
