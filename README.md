@@ -1,5 +1,7 @@
 # errata
 
+[![ci](https://github.com/cp15695540483/errata/actions/workflows/ci.yml/badge.svg)](https://github.com/cp15695540483/errata/actions/workflows/ci.yml)
+
 Readable source diagnostics for MoonBit: map a byte offset to a 1-based
 `(line, column)` and render the surrounding source as an annotated snippet.
 
