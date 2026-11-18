@@ -8,6 +8,10 @@ import {
 // Values
 pub fn apply(String, Array[@error-report.Fix]) -> ApplyOutcome
 
+pub fn apply_all(Array[FilePlan], Array[String]) -> TransactionOutcome
+
+pub fn apply_verified(String, Array[@error-report.Fix]) -> ApplyOutcome
+
 pub fn check(String, Array[@error-report.Fix]) -> Refusal?
 
 pub fn count(Array[@error-report.Fix]) -> Int32
@@ -27,6 +31,8 @@ pub fn sorted(Array[@error-report.Fix]) -> Array[@error-report.Fix]
 pub fn summary(Array[@error-report.Fix]) -> Summary
 
 pub fn unique_count(Array[@error-report.Fix]) -> Int32
+
+pub fn verify(Array[FilePlan], Array[String]) -> Int32
 
 // Errors
 
@@ -50,11 +56,22 @@ pub(all) enum Refusal {
   OutOfRange(Int32, Int32)
   Overlap(Int32, Int32)
   NotBoundary(Int32)
+  Stale(Int32)
 }
 
 pub(all) struct Summary {
   files : Int32
   fixes : Int32
+}
+
+pub(all) struct Transaction {
+  path : String
+  fixes : Array[@error-report.Fix]
+}
+
+pub(all) enum TransactionOutcome {
+  AllApplied(Int32)
+  Refused(String, Refusal)
 }
 
 // Type aliases

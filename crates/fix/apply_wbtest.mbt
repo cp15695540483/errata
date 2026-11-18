@@ -35,6 +35,7 @@ fn describe_short(r : Refusal) -> String {
     OutOfRange(a, b) => "range(" + a.to_string() + "," + b.to_string() + ")"
     Overlap(a, b) => "overlap(" + a.to_string() + "," + b.to_string() + ")"
     NotBoundary(i) => "boundary(" + i.to_string() + ")"
+    Stale(i) => "stale(" + i.to_string() + ")"
   }
 }
 

@@ -12,5 +12,7 @@ pub fn describe(r : Refusal) -> String {
       "fixes " + a.to_string() + " and " + b.to_string() + " overlap"
     NotBoundary(i) =>
       "fix " + i.to_string() + " starts or ends inside a character"
+    Stale(i) =>
+      "fix " + i.to_string() + " was produced against a different text"
   }
 }

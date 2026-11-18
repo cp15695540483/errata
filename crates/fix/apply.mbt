@@ -7,6 +7,8 @@ pub(all) enum Refusal {
   Overlap(Int32, Int32)
   /// A range starts or ends inside a multi-byte character.
   NotBoundary(Int32)
+  /// The fixes were produced against a different text.
+  Stale(Int32)
 }
 
 ///|
