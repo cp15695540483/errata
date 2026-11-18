@@ -12,12 +12,23 @@ pub fn check(String, Array[@error-report.Fix]) -> Refusal?
 
 pub fn count(Array[@error-report.Fix]) -> Int32
 
+pub fn describe(Refusal) -> String
+
+pub fn diff(String, String) -> String
+
+pub fn parse_manifest(String) -> Array[FilePlan]
+
 // Errors
 
 // Types and methods
 pub(all) enum ApplyOutcome {
   Applied(String)
   Refused(Refusal)
+}
+
+pub(all) struct FilePlan {
+  path : String
+  fixes : Array[@error-report.Fix]
 }
 
 pub(all) enum Refusal {

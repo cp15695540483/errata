@@ -19,4 +19,5 @@ keywords = [
 description = "Readable source diagnostics for MoonBit: byte offset to (line, column) and annotated snippet rendering"
 import {
   "marianoguerra/error-report@0.1.2",
+  "moonbitlang/x@0.5.7",
 }

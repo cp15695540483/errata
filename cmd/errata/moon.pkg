@@ -1,6 +1,9 @@
 import {
+  "cp15695540483/errata/crates/fix",
   "cp15695540483/errata/crates/moonc",
+  "moonbitlang/core/encoding/utf8",
   "moonbitlang/core/env",
+  "moonbitlang/x/fs",
 }
 
 pkgtype(kind: "executable")

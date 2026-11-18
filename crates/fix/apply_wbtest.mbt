@@ -24,12 +24,12 @@ fn fix(start : Int, len : Int, replacement : String) -> @error-report.Fix {
 fn text_of(o : ApplyOutcome) -> String {
   match o {
     Applied(s) => s
-    Refused(r) => "REFUSED:" + describe(r)
+    Refused(r) => "REFUSED:" + describe_short(r)
   }
 }
 
 ///|
-fn describe(r : Refusal) -> String {
+fn describe_short(r : Refusal) -> String {
   match r {
     OutOfRange(a, b) => "range(" + a.to_string() + "," + b.to_string() + ")"
     Overlap(a, b) => "overlap(" + a.to_string() + "," + b.to_string() + ")"
