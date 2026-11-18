@@ -2,100 +2,90 @@
 
 [![ci](https://github.com/cp15695540483/errata/actions/workflows/ci.yml/badge.svg)](https://github.com/cp15695540483/errata/actions/workflows/ci.yml)
 
-Readable source diagnostics for MoonBit: map a byte offset to a 1-based
-`(line, column)` and render the surrounding source as an annotated snippet.
+Apply the fixes a tool already knows about, without corrupting the file.
 
-Pure MoonBit, no FFI, and no IO in the core crates, so the same code runs on
-`wasm-gc`, `js` and `native`.
+errata is the missing half of source diagnostics. Rendering a snippet is a
+solved problem: [marianoguerra/error-report](https://github.com/marianoguerra/shrubbery-mb)
+already holds the report model and prints rich, short and JSON output. What no
+MoonBit package does is take a set of machine-applicable fixes and land them
+safely. errata does that, and reuses error-report for everything else.
 
-## Status
-
-Every row describes what is in the repository today; nothing is claimed ahead
-of its implementation.
+## What this project adds
 
 | Capability | State |
 | --- | --- |
-| Line table: byte offset to `(line, column)`, `
-` and `
-` agree | implemented |
-| `LineIndex::line_start`, `line_count`, `byte_length` | implemented |
-| Diagnostic model: severity, code, labelled spans, notes | implemented |
-| Display width: control 0, combining 0, CJK and emoji 2, tab stops | implemented |
-| Plain-text renderer: header, code line, caret, notes | implemented |
-| HTML renderer: escaped markup wrapped around the plain-text snippet | implemented |
-| Compiler JSON adapter: parse one diagnostic line into a rendered snippet | implemented |
-| `errata` CLI: render one compiler record, file name only | implemented |
+| Check a fix set before touching the file: range, character boundary, intersection | implemented |
+| Apply a fix set in one pass, refusing instead of corrupting | implemented |
+| Order independence: the same set applies the same way whatever the input order | implemented |
+| Manifest parsing, grouped per file, one bad line does not hide the rest | implemented |
+| Unified-style diff for a dry run | implemented |
+| `errata fix <manifest> [--write]` | implemented |
+| `errata render <json-record> <source>` through error-report | implemented |
+| Fixpoint loop that re-checks after applying | not implemented |
+| Report set: sort, dedupe, group, summary counts, exit codes | not implemented |
 
-## Quick start
+## What this project deliberately does not do
 
-```bash
-moon check
-moon test
-```
+- It does not render diagnostics. `error-report` does, and a second renderer
+  would only drift from it.
+- It does not implement display width, tab expansion or CJK alignment.
+  `error-report/render` owns those.
+- It does not parse MoonBit syntax, run the compiler, or replace `moon fmt`.
 
-Or add the released package and call the API from your own code:
+## Install
 
 ```bash
 moon add cp15695540483/errata
 ```
 
-```moonbit
-let index = @span.LineIndex::from_string("line one
-line two")
-match index.locate(9) {
-  Some(loc) => println("\{loc.line}:\{loc.column}")
-  None => println("offset out of range")
-}
+## Usage
+
+Render one compiler record the toolchain prints:
+
+```bash
+moon run cmd/errata -- render '{"level":"error","error_code":4014,"loc":"1:9-1:10","message":"Expr Type Mismatch"}' 'let y = x + 1'
 ```
 
-`locate` accepts every offset from `0` through `byte_length()` inclusive; the
-offset equal to the buffer length is the position just past the last byte.
+Preview a fix set (no write):
 
-## Runnable example
+```bash
+moon run cmd/errata -- fix fixes.tsv
+```
 
-`examples/render_demo` renders one diagnostic and prints the snippet:
+A manifest is one fix per line, tab separated:
 
-    moon run examples/render_demo
+```
+# path	start	len	replacement
+src/lib.mbt	8	1	y
+```
 
-    error: unknown type
-      ╭─[ demo.mbt:1:9 ]
-    1 │ let y = x + 1
-      │         ^ unknown type
+Add `--write` to apply. A file whose text would not change is reported as
+`unchanged`, so a second run is visibly a no-op rather than a second edit.
 
-The file name is always a base name: a compiler path is absolute, and a
-snippet must not repeat a machine directory.
+## From the library
 
-## Demo
-
-![Demo](docs/demo.gif)
-
-The animation shows `cmd/errata` rendering one compiler record and the test
-suite summary. The captured output and the two command lines live in
-[`tools/demo/`](tools/demo); `tools/make_demo.py` rebuilds the GIF from them,
-so the frames cannot drift from what the code prints.
-
-## Command line
-
-The executable takes the record the toolchain prints and the source text:
-
-    moon run cmd/errata -- '{"level":"error",...}' 'let y = x + 1'
-
-Output:
-
-    error: Expr Type Mismatch
-      ╭─[ bad.mbt:1:9 ]
-    1 │ let y = x + 1
-      │         ^ Expr Type Mismatch
-
-The file name in the header is always a base name, because a compiler path is
-absolute and a snippet must not repeat a machine directory.
+```moonbit
+let fixes : Array[@error-report.Fix] = [
+  {
+    source: @error-report.SourceId(0),
+    span: @error-report.Span::{ start: 8, len: 1 },
+    replacement: "y",
+    description: "",
+  },
+]
+match @fix.apply("let y = x + 1", fixes) {
+  Applied(text) => println(text)
+  Refused(reason) => println(@fix.describe(reason))
+}
+```
 
 ## Documentation
 
 - [docs/DESIGN.md](docs/DESIGN.md) - layering, invariants and roadmap
-- [docs/PORTING.md](docs/PORTING.md) - upstream projects that inform the design
+- [docs/PORTING.md](docs/PORTING.md) - what is reused, what is new, and why
 - [docs/adr](docs/adr) - decision records
 
 ## License
 
 MIT, see [LICENSE](LICENSE).
+

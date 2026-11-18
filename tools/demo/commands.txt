@@ -1,2 +1,3 @@
-moon run cmd/errata -- '{"level":"error","path":"/home/somebody/src/bad.mbt","loc":"1:9-1:10","message":"Expr Type Mismatch"}' 'let y = x + 1'
+moon run cmd/errata -- render <record> <source>
+errata fix fixes.tsv
 moon test --deny-warn

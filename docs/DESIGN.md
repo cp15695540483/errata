@@ -2,40 +2,43 @@
 
 ## Purpose
 
-`errata` turns a raw byte offset into a human-readable location and renders the
-source around it. It is a library first: a renderer is a pure function from a
-report value to a `String`, so the same code serves a terminal, a browser and a
-test.
+Turn a set of machine-applicable fixes into either a new file or a refusal.
+Nothing in between: a half-applied file is worse than an unapplied one.
 
 ## Layering
 
-| Directory | Responsibility | State |
+| Directory | Responsibility | IO |
 | --- | --- | --- |
-| `crates/span` | line table, byte offset to `(line, column)`, line starts | implemented |
-| `crates/diagnostic` | severity ranks, code, labelled spans, notes; owns the `Span` range type | implemented |
-| `crates/width` | UTF-8 decoding, code point display width, tab expansion, column advance | implemented |
-| `crates/render_ansi` | plain-text snippet layout: header, code line, caret, notes | implemented |
-| `crates/render_html` | HTML figure around the plain-text snippet, markup escaped | implemented |
-| `crates/cli` | parse a compiler JSON diagnostic line into a rendered snippet | implemented |
-| `cmd/errata` | CLI executable: renders one compiler record and prints the snippet | implemented |
+| `crates/fix` | check, apply, manifest parsing, diff | none |
+| `crates/moonc` | compiler JSON record to an error-report `Report` | none |
+| `cmd/errata` | argument parsing, file reads and writes | all of it |
 
-A crate is created only together with its first implemented feature. Planned
-rows are intent, not code, and no empty package exists in the tree.
+`crates/fix` is pure: text in, text or a refusal out. That is why it can be
+tested exhaustively and why the same code runs on every backend.
+
+## What is reused
+
+`marianoguerra/error-report` owns the diagnostic model (`Report`, `Label`,
+`Span`, `Source`, `Sources`, `Fix`) and the renderers. errata depends on it,
+constructs its types, and passes reports to `render_string`. There is no second
+snippet layout in this repository.
 
 ## Invariants
 
-1. Offsets are UTF-8 byte offsets. Callers holding a `String` use
-   `LineIndex::from_string`, which encodes once.
-2. `Location` is 1-based on both axes.
-3. `
-` ends a line; in `
-` the `` belongs to the line it terminates, so
-   CRLF and LF input agree on line numbering.
-4. Every offset in `0 ..= byte_length()` maps to a location; anything else is
-   `None`.
-5. Core crates do no IO and read no environment.
+1. `check` never mutates. It reports the first real problem in a fixed order:
+   range, character boundary, intersection.
+2. `apply` runs `check` first, so a refused set leaves the text untouched.
+3. Edits are sorted by start offset, so input order cannot change the result.
+4. Adjacent ranges are allowed; an empty range inserts.
+5. A range may not start or end inside a multi-byte character.
+6. Applying a set twice either changes nothing or is refused; it never doubles
+   an edit.
+7. The core crates do no IO and read no environment.
 
 ## Roadmap
 
-A row in the README table moves to `implemented` in the same commit that adds
-its tests. Order of work: display width, ANSI renderer, HTML renderer, CLI.
+- Fixpoint loop: after applying, re-collect diagnostics and apply again until
+  the set is empty.
+- Report set: sort, dedupe, group by file, summary counts, exit-code policy.
+- JSON manifest in addition to the tab-separated one.
+

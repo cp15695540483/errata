@@ -1,6 +1,6 @@
 name = "cp15695540483/errata"
 
-version = "0.1.0"
+version = "0.2.0"
 
 readme = "README.md"
 
@@ -9,15 +9,17 @@ repository = "https://github.com/cp15695540483/errata"
 license = "MIT"
 
 keywords = [
+  "fix",
+  "autofix",
   "diagnostic",
-  "error-report",
-  "source-span",
-  "snippet",
-  "renderer",
+  "refactor",
+  "developer-tools",
 ]
 
-description = "Readable source diagnostics for MoonBit: byte offset to (line, column) and annotated snippet rendering"
+description = "Apply machine-applicable fixes safely: refuse overlap, keep order independent, diff before writing. Rendering is delegated to marianoguerra/error-report."
+
 import {
   "marianoguerra/error-report@0.1.2",
   "moonbitlang/x@0.5.7",
 }
+

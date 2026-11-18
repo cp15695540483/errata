@@ -1,0 +1,17 @@
+error: Expr Type Mismatch
+  ╭─[ input.mbt:1:9 ]
+  │
+1 │ let y = x + 1
+  │         ┬
+  │         ╰─ Expr Type Mismatch
+  ╰─
+%%%
+--- E:/p的项目/_fxdemo/demo.mbt
+@@ -1,1 +1,1 @@
+-let y = x + 1
++let y = y + 1
+ 
+
+1 applied, 0 refused
+%%%
+Total tests: 22, passed: 22, failed: 0.
