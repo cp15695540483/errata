@@ -6,7 +6,7 @@ error: Expr Type Mismatch
   │         ╰─ Expr Type Mismatch
   ╰─
 %%%
---- E:/p的项目/_fxdemo/demo.mbt
+--- demo.mbt
 @@ -1,1 +1,1 @@
 -let y = x + 1
 +let y = y + 1

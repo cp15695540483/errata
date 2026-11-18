@@ -16,6 +16,8 @@ safely. errata does that, and reuses error-report for everything else.
 | --- | --- |
 | Check a fix set before touching the file: range, character boundary, intersection | implemented |
 | Apply a fix set in one pass, refusing instead of corrupting | implemented |
+| Refuse a stale set whose range no longer fits the current text | implemented |
+| All-or-nothing transaction across files, reporting the failing path | implemented |
 | Order independence: the same set applies the same way whatever the input order | implemented |
 | Manifest parsing, grouped per file, one bad line does not hide the rest | implemented |
 | Unified-style diff for a dry run | implemented |
