@@ -1,0 +1,31 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "cp15695540483/errata/crates/fix"
+
+import {
+  "marianoguerra/error-report",
+}
+
+// Values
+pub fn apply(String, Array[@error-report.Fix]) -> ApplyOutcome
+
+pub fn check(String, Array[@error-report.Fix]) -> Refusal?
+
+pub fn count(Array[@error-report.Fix]) -> Int32
+
+// Errors
+
+// Types and methods
+pub(all) enum ApplyOutcome {
+  Applied(String)
+  Refused(Refusal)
+}
+
+pub(all) enum Refusal {
+  OutOfRange(Int32, Int32)
+  Overlap(Int32, Int32)
+  NotBoundary(Int32)
+}
+
+// Type aliases
+
+// Traits
