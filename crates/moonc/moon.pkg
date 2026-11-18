@@ -1,0 +1,4 @@
+import {
+  "marianoguerra/error-report",
+  "marianoguerra/error-report/render",
+}

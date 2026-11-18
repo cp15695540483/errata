@@ -1,6 +1,5 @@
 import {
-  "cp15695540483/errata/crates/cli",
-  "cp15695540483/errata/crates/render_ansi",
+  "cp15695540483/errata/crates/moonc",
   "moonbitlang/core/env",
 }
 

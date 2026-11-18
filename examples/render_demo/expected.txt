@@ -1,5 +1,0 @@
-error: unknown type
-  ╭─[ demo.mbt:1:9 ]
-1 │ let y = x + 1
-  │         ^ unknown type
-

@@ -1,0 +1,25 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "cp15695540483/errata/crates/moonc"
+
+// Values
+pub fn field(String, String) -> String?
+
+pub fn parse(String) -> Record?
+
+pub fn range_of_loc(String, String) -> (Int32, Int32)?
+
+pub fn render_line(String, String, String, Bool) -> String?
+
+// Errors
+
+// Types and methods
+pub(all) struct Record {
+  level : String
+  code : String
+  message : String
+  loc : String
+}
+
+// Type aliases
+
+// Traits
