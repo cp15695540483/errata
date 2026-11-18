@@ -12,11 +12,21 @@ pub fn check(String, Array[@error-report.Fix]) -> Refusal?
 
 pub fn count(Array[@error-report.Fix]) -> Int32
 
+pub fn dedup(Array[@error-report.Fix]) -> Array[@error-report.Fix]
+
 pub fn describe(Refusal) -> String
 
 pub fn diff(String, String) -> String
 
+pub fn group(Array[@error-report.Fix]) -> Array[Group]
+
 pub fn parse_manifest(String) -> Array[FilePlan]
+
+pub fn sorted(Array[@error-report.Fix]) -> Array[@error-report.Fix]
+
+pub fn summary(Array[@error-report.Fix]) -> Summary
+
+pub fn unique_count(Array[@error-report.Fix]) -> Int32
 
 // Errors
 
@@ -31,10 +41,20 @@ pub(all) struct FilePlan {
   fixes : Array[@error-report.Fix]
 }
 
+pub(all) struct Group {
+  source : @error-report.SourceId
+  fixes : Array[@error-report.Fix]
+}
+
 pub(all) enum Refusal {
   OutOfRange(Int32, Int32)
   Overlap(Int32, Int32)
   NotBoundary(Int32)
+}
+
+pub(all) struct Summary {
+  files : Int32
+  fixes : Int32
 }
 
 // Type aliases
