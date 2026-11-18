@@ -13,14 +13,16 @@ fn is_digit(c : Char) -> Bool {
 }
 
 ///|
-fn find_key(chars : Array[Char], key : String) -> Int {
+fn find_key(chars : Array[Char], key : String) -> Int32 {
   let kc = key.to_array()
   let n = chars.length()
   let m = kc.length()
   let mut i = 0
   let mut hit = -1
   while hit < 0 && i + m + 3 <= n {
-    if chars[i].to_int() == 34 && chars[i + m + 1].to_int() == 34 && chars[i + m + 2].to_int() == 58 {
+    if chars[i].to_int() == 34 &&
+      chars[i + m + 1].to_int() == 34 &&
+      chars[i + m + 2].to_int() == 58 {
       let mut j = 0
       let mut same = true
       while same && j < m {
@@ -109,11 +111,11 @@ pub fn parse(line : String) -> Record? {
     Some(v) => v
     None => ""
   }
-  Some({ level: level, code: code, message: message, loc: loc })
+  Some({ level, code, message, loc, })
 }
 
 ///|
-fn utf8_len(cp : Int) -> Int {
+fn utf8_len(cp : Int32) -> Int32 {
   if cp < 0x80 {
     1
   } else if cp < 0x800 {
@@ -127,7 +129,7 @@ fn utf8_len(cp : Int) -> Int {
 
 ///|
 /// Byte offset of a 1-based (line, column) pair, or -1.
-fn byte_of(chars : Array[Char], line : Int, column : Int) -> Int {
+fn byte_of(chars : Array[Char], line : Int32, column : Int32) -> Int32 {
   let n = chars.length()
   let mut cur_line = 1
   let mut cur_col = 1
@@ -156,7 +158,7 @@ fn byte_of(chars : Array[Char], line : Int, column : Int) -> Int {
 }
 
 ///|
-fn read_uint(chars : Array[Char], start : Int) -> (Int, Int) {
+fn read_uint(chars : Array[Char], start : Int32) -> (Int32, Int32) {
   let n = chars.length()
   let mut i = start
   let mut value = 0
@@ -177,7 +179,7 @@ fn read_uint(chars : Array[Char], start : Int) -> (Int, Int) {
 /// Turn a compiler `loc` such as `3:3-3:15` into a byte range of `source`.
 ///
 /// A single position becomes an empty range so a caret still has a cell.
-pub fn range_of_loc(source : String, loc : String) -> (Int, Int)? {
+pub fn range_of_loc(source : String, loc : String) -> (Int32, Int32)? {
   let lc = loc.to_array()
   let first = read_uint(lc, 0)
   if first.0 < 1 || first.1 >= lc.length() || lc[first.1].to_int() != 58 {
@@ -240,7 +242,10 @@ pub fn render_line(
   }
   let sources = @error-report.Sources::new()
   let sid = sources.add(source_name, source_text)
-  let mut report = @error-report.Report::new(severity_of(record.level), record.message)
+  let mut report = @error-report.Report::new(
+    severity_of(record.level),
+    record.message,
+  )
   if record.code != "" {
     report = report.with_code(record.code)
   }
@@ -248,10 +253,11 @@ pub fn render_line(
     Some(pair) => {
       let (start, stop) = pair
       let span = @error-report.Span::of_range(start, stop)
-      report = report.with_label(@error-report.Label::primary(sid, span, message=record.message))
+      report = report.with_label(
+        @error-report.Label::primary(sid, span, message=record.message),
+      )
     }
     None => ()
   }
-  Some(@render.render_string(report, sources, @render.default_config, is_tty=is_tty))
+  Some(@render.render_string(report, sources, @render.default_config, is_tty~))
 }
-

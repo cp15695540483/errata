@@ -11,7 +11,9 @@ fn read_text(path : String) -> String? {
 
 ///|
 fn write_text(path : String, text : String) -> Bool {
-  let ok = @fs.write_bytes_to_file(path, @utf8.encode(text)) catch { _ => return false }
+  let ok = @fs.write_bytes_to_file(path, @utf8.encode(text)) catch {
+    _ => return false
+  }
   ignore(ok)
   true
 }
@@ -59,7 +61,7 @@ fn run_fix(manifest_path : String, write : Bool) -> Unit {
       }
     }
     match @fix.apply(source, plan.fixes) {
-      Applied(next) => {
+      Applied(next) =>
         if next == source {
           println("unchanged " + plan.path)
         } else if write {
@@ -74,14 +76,15 @@ fn run_fix(manifest_path : String, write : Bool) -> Unit {
           println("--- " + plan.path)
           println(@fix.diff(source, next))
         }
-      }
       Refused(reason) => {
         refused = refused + 1
         println("refused " + plan.path + ": " + @fix.describe(reason))
       }
     }
   }
-  println("" + applied.to_string() + " applied, " + refused.to_string() + " refused")
+  println(
+    "" + applied.to_string() + " applied, " + refused.to_string() + " refused",
+  )
 }
 
 ///|
@@ -90,7 +93,8 @@ fn main {
   let render_args = args_after(args, "render")
   let fix_args = args_after(args, "fix")
   if render_args.length() >= 2 {
-    match @moonc.render_line(render_args[0], "input.mbt", render_args[1], false) {
+    match
+      @moonc.render_line(render_args[0], "input.mbt", render_args[1], false) {
       Some(out) => println(out)
       None => println("not a diagnostic record")
     }
@@ -106,4 +110,3 @@ fn main {
     println(usage())
   }
 }
-

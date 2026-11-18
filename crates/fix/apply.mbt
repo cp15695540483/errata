@@ -2,11 +2,11 @@
 /// Why a set of fixes cannot be applied safely.
 pub(all) enum Refusal {
   /// The range starts before the buffer or ends after it.
-  OutOfRange(Int, Int)
+  OutOfRange(Int32, Int32)
   /// Two ranges intersect. The payloads are their positions in the input.
-  Overlap(Int, Int)
+  Overlap(Int32, Int32)
   /// A range starts or ends inside a multi-byte character.
-  NotBoundary(Int)
+  NotBoundary(Int32)
 }
 
 ///|
@@ -19,13 +19,13 @@ pub(all) enum ApplyOutcome {
 ///|
 /// One edit ready to be applied, with the offset already widened to Int.
 priv struct Edit {
-  start : Int
-  len : Int
+  start : Int32
+  len : Int32
   replacement : String
 }
 
 ///|
-fn is_continuation(b : Int) -> Bool {
+fn is_continuation(b : Int32) -> Bool {
   b >= 0x80 && b <= 0xBF
 }
 
@@ -33,7 +33,7 @@ fn is_continuation(b : Int) -> Bool {
 /// Whether `offset` falls on a character boundary of `bytes`.
 ///
 /// Offset 0 and the end of the buffer are boundaries by definition.
-fn on_boundary(bytes : Bytes, offset : Int) -> Bool {
+fn on_boundary(bytes : Bytes, offset : Int32) -> Bool {
   if offset <= 0 || offset >= bytes.length() {
     true
   } else {
@@ -47,7 +47,11 @@ fn to_edits(fixes : Array[@error-report.Fix]) -> Array[Edit] {
   let out : Array[Edit] = []
   for i = 0; i < fixes.length(); i = i + 1 {
     let f = fixes[i]
-    out.push({ start: f.span.start, len: f.span.len, replacement: f.replacement })
+    out.push({
+      start: f.span.start,
+      len: f.span.len,
+      replacement: f.replacement,
+    })
   }
   let n = out.length()
   for i = 1; i < n; i = i + 1 {
@@ -83,7 +87,8 @@ pub fn check(text : String, fixes : Array[@error-report.Fix]) -> Refusal? {
     let e = edits[i]
     if e.start < 0 || e.len < 0 || e.start + e.len > size {
       bad = Some(Refusal::OutOfRange(e.start, e.len))
-    } else if !on_boundary(bytes, e.start) || !on_boundary(bytes, e.start + e.len) {
+    } else if !on_boundary(bytes, e.start) ||
+      !on_boundary(bytes, e.start + e.len) {
       bad = Some(Refusal::NotBoundary(i))
     } else {
       i = i + 1
@@ -139,7 +144,6 @@ pub fn apply(text : String, fixes : Array[@error-report.Fix]) -> ApplyOutcome {
 
 ///|
 /// Number of fixes in a set, for callers that report progress.
-pub fn count(fixes : Array[@error-report.Fix]) -> Int {
+pub fn count(fixes : Array[@error-report.Fix]) -> Int32 {
   fixes.length()
 }
-

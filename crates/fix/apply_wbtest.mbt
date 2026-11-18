@@ -1,3 +1,4 @@
+///|
 fn multibyte() -> String {
   "中"
 }
@@ -11,11 +12,11 @@ fn has_refusal(r : Refusal?) -> Bool {
 }
 
 ///|
-fn fix(start : Int, len : Int, replacement : String) -> @error-report.Fix {
+fn fix(start : Int32, len : Int32, replacement : String) -> @error-report.Fix {
   {
     source: @error-report.SourceId(0),
-    span: @error-report.Span::{ start: start, len: len },
-    replacement: replacement,
+    span: @error-report.Span::{ start, len, },
+    replacement,
     description: "",
   }
 }
@@ -126,4 +127,3 @@ test "count reports the set size" {
   assert_eq(count([]), 0)
   assert_eq(count([fix(0, 1, "a"), fix(1, 1, "b")]), 2)
 }
-

@@ -16,7 +16,7 @@ fn fields(line : String) -> Array[String] {
 }
 
 ///|
-fn to_int(text : String) -> Int? {
+fn to_int(text : String) -> Int32? {
   let chars = text.to_array()
   if chars.length() == 0 {
     return None
@@ -49,11 +49,15 @@ fn to_int(text : String) -> Int? {
 }
 
 ///|
-fn make_fix(start : Int, len : Int, replacement : String) -> @error-report.Fix {
+fn make_fix(
+  start : Int32,
+  len : Int32,
+  replacement : String,
+) -> @error-report.Fix {
   {
     source: @error-report.SourceId(0),
-    span: @error-report.Span::{ start: start, len: len },
-    replacement: replacement,
+    span: @error-report.Span::{ start, len, },
+    replacement,
     description: "",
   }
 }
@@ -101,8 +105,7 @@ pub fn parse_manifest(text : String) -> Array[FilePlan] {
   }
   let plans : Array[FilePlan] = []
   for i = 0; i < paths.length(); i = i + 1 {
-    plans.push({ path: paths[i], fixes: groups[i] })
+    plans.push({ path: paths[i], fixes: groups[i], })
   }
   plans
 }
-

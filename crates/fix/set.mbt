@@ -65,7 +65,7 @@ pub fn dedup(fixes : Array[@error-report.Fix]) -> Array[@error-report.Fix] {
 
 ///|
 /// Number of fixes after deduplication.
-pub fn unique_count(fixes : Array[@error-report.Fix]) -> Int {
+pub fn unique_count(fixes : Array[@error-report.Fix]) -> Int32 {
   dedup(fixes).length()
 }
 
@@ -100,7 +100,7 @@ pub fn group(fixes : Array[@error-report.Fix]) -> Array[Group] {
   }
   let out : Array[Group] = []
   for i = 0; i < ids.length(); i = i + 1 {
-    out.push({ source: ids[i], fixes: groups[i] })
+    out.push({ source: ids[i], fixes: groups[i], })
   }
   out
 }
@@ -108,8 +108,8 @@ pub fn group(fixes : Array[@error-report.Fix]) -> Array[Group] {
 ///|
 /// A summary of what a set contains.
 pub(all) struct Summary {
-  files : Int
-  fixes : Int
+  files : Int32
+  fixes : Int32
 }
 
 ///|
@@ -120,7 +120,5 @@ pub fn summary(fixes : Array[@error-report.Fix]) -> Summary {
   for i = 0; i < groups.length(); i = i + 1 {
     total = total + groups[i].fixes.length()
   }
-  { files: groups.length(), fixes: total }
+  { files: groups.length(), fixes: total, }
 }
-
-

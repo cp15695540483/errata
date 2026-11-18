@@ -1,15 +1,20 @@
 ///|
-fn f(source : Int, start : Int, len : Int, replacement : String) -> @error-report.Fix {
+fn f(
+  source : Int32,
+  start : Int32,
+  len : Int32,
+  replacement : String,
+) -> @error-report.Fix {
   {
     source: @error-report.SourceId(source),
-    span: @error-report.Span::{ start: start, len: len },
-    replacement: replacement,
+    span: @error-report.Span::{ start, len, },
+    replacement,
     description: "",
   }
 }
 
 ///|
-fn first_start(fixes : Array[@error-report.Fix]) -> Int {
+fn first_start(fixes : Array[@error-report.Fix]) -> Int32 {
   if fixes.length() == 0 {
     -1
   } else {
@@ -58,6 +63,7 @@ test "an empty set is stable" {
   assert_eq(dedup([]).length(), 0)
   assert_eq(unique_count([]), 0)
 }
+
 ///|
 test "group splits by source and keeps order" {
   let fixes = [f(0, 0, 1, "a"), f(1, 0, 1, "b"), f(0, 2, 1, "c")]
@@ -74,5 +80,3 @@ test "summary counts deduplicated fixes" {
   assert_eq(s.files, 2)
   assert_eq(s.fixes, 2)
 }
-
-

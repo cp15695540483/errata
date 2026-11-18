@@ -55,4 +55,3 @@ test "manifest fixes apply to the text" {
   }
   assert_eq(out, "Abc")
 }
-

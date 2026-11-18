@@ -44,7 +44,9 @@ pub fn diff(old_text : String, new_text : String) -> String {
     pre = pre + 1
   }
   let mut suf = 0
-  while suf < a.length() - pre && suf < b.length() - pre && a[a.length() - 1 - suf] == b[b.length() - 1 - suf] {
+  while suf < a.length() - pre &&
+        suf < b.length() - pre &&
+        a[a.length() - 1 - suf] == b[b.length() - 1 - suf] {
     suf = suf + 1
   }
   let ctx = 2
@@ -53,7 +55,12 @@ pub fn diff(old_text : String, new_text : String) -> String {
   let new_end = b.length() - suf
   let mut out = "@@ -"
   out = out + (from + 1).to_string() + "," + (old_end - from).to_string()
-  out = out + " +" + (from + 1).to_string() + "," + (new_end - from).to_string() + " @@"
+  out = out +
+    " +" +
+    (from + 1).to_string() +
+    "," +
+    (new_end - from).to_string() +
+    " @@"
   out = out + "\n"
   for i = from; i < pre; i = i + 1 {
     out = out + " " + a[i] + "\n"
@@ -64,10 +71,13 @@ pub fn diff(old_text : String, new_text : String) -> String {
   for i = pre; i < new_end; i = i + 1 {
     out = out + "+" + b[i] + "\n"
   }
-  let tail_stop = if old_end + ctx < a.length() { old_end + ctx } else { a.length() }
+  let tail_stop = if old_end + ctx < a.length() {
+    old_end + ctx
+  } else {
+    a.length()
+  }
   for i = old_end; i < tail_stop; i = i + 1 {
     out = out + " " + a[i] + "\n"
   }
   out
 }
-
