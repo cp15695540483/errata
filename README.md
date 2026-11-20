@@ -38,7 +38,11 @@ safely. errata does that, and reuses error-report for everything else.
 
 ```bash
 moon add cp15695540483/errata
+moon add marianoguerra/error-report
 ```
+
+The second dependency is required because the library API takes `@error-report.Fix`
+values directly, so a caller constructs them in their own code.
 
 ## Usage
 
@@ -65,6 +69,9 @@ Add `--write` to apply. A file whose text would not change is reported as
 `unchanged`, so a second run is visibly a no-op rather than a second edit.
 
 ## From the library
+
+A caller adds both packages, imports `@error-report` for the types and `@fix`
+for the application layer, then:
 
 ```moonbit
 let fixes : Array[@error-report.Fix] = [
