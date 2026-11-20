@@ -8,11 +8,15 @@ import {
 // Values
 pub fn apply(String, Array[@error-report.Fix]) -> ApplyOutcome
 
+pub fn apply_addressed(String, Array[AddressedFix]) -> ApplyOutcome
+
 pub fn apply_all(Array[FilePlan], Array[String]) -> TransactionOutcome
 
 pub fn apply_verified(String, Array[@error-report.Fix]) -> ApplyOutcome
 
 pub fn check(String, Array[@error-report.Fix]) -> Refusal?
+
+pub fn check_addressed(String, Array[AddressedFix]) -> Refusal?
 
 pub fn count(Array[@error-report.Fix]) -> Int32
 
@@ -37,6 +41,11 @@ pub fn verify(Array[FilePlan], Array[String]) -> Int32
 // Errors
 
 // Types and methods
+pub(all) struct AddressedFix {
+  fix : @error-report.Fix
+  expected : String?
+}
+
 pub(all) enum ApplyOutcome {
   Applied(String)
   Refused(Refusal)
