@@ -67,6 +67,7 @@ fn run_fix(manifest_path : String, write : Bool) -> Unit {
         } else if write {
           let ok = write_text(plan.path, next)
           if ok {
+            applied = applied + 1
             println("fixed " + plan.path)
           } else {
             println("cannot write " + plan.path)
