@@ -9,10 +9,16 @@ on:
 jobs:
   check:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [wasm-gc, js, native]
     steps:
       - uses: actions/checkout@v5
       - name: Set up MoonBit
         uses: ./.github/actions/moonbit
       - run: moon version --all
-      - run: moon check --deny-warn
-      - run: moon test --deny-warn
+      - run: moon check --target ${{ matrix.target }} --deny-warn
+      - run: moon build --target ${{ matrix.target }}
+      - run: moon test --target ${{ matrix.target }} --deny-warn
+
