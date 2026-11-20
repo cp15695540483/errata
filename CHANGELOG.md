@@ -2,6 +2,15 @@
 
 The format follows Keep a Changelog and the project uses Semantic Versioning.
 
+## 0.3.0
+
+### Added
+
+- `AddressedFix` and `check_addressed` / `apply_addressed`: a fix may carry an
+  `expected` anchor; same-length edits that changed the text are refused as
+  stale, and an empty insertion anchors on the text to its right so a re-run
+  refuses instead of inserting twice.
+
 ## 0.2.0
 
 ### Changed
