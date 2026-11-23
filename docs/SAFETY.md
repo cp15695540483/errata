@@ -1,62 +1,103 @@
 # Safety guarantees
 
-This document answers, for each guarantee the project makes: what input it
-needs, where it applies, what the user flow is, and a concrete case.
+For each guarantee: the mechanism, the boundary, and a case. Every case is a
+test in `crates/fix/addressed_wbtest.mbt`, so the document cannot drift from
+the code.
 
-## Guarantee 1: stale detection
+## Guarantee 1: a re-run does not modify the file a second time
 
-**Input basis.** A fix may carry an `expected` anchor: the exact text that was
-present at the fix span when the fix was produced. Position alone cannot
-detect a same-length edit; the anchor can.
+### Mechanism
 
-**Applicability.** Anchored fixes are refused when the current text at the span
-differs from `expected`. Fixes without an anchor keep positional semantics and
-make no staleness claim.
+A fix may carry a **file snapshot**: the hash of the whole text the fix was
+produced against. `snapshot_of(text)` is two independently seeded FNV-1a
+hashes concatenated (64 bits of output). `check_addressed` recomputes the
+snapshot of the current text and refuses the whole set as `Stale(i)` when it
+differs. Position and range anchors are not used for this decision, because
+they look at the same bytes the previous run just wrote.
 
-**User flow.** A tool records the source text alongside the fix. Before
-applying, `check_addressed` reads the span, compares it to the anchor, and
-refuses with `Stale(i)` on mismatch. Nothing is written.
+### Why a range anchor is not enough
 
-**Case.** Source `abc`, fix `{span:1..2, replacement:X, expected:Some("b")}`.
-If the file has become `adc` (same length, different character), position would
-still allow the edit, but the anchor refuses it. If the file is still `abc`,
-the edit applies and produces `aXc`.
+Anchoring the text to the right of an insertion point fails when the inserted
+text equals the anchor. Case:
 
-## Guarantee 2: repeated runs change nothing
+```
+text      = "abc"
+fix       = insert "b" at offset 1, range anchor Some("b")
+run 1     -> "abbc"          (the anchor "b" matched)
+run 2     -> reads "b" at offset 1, which is the b run 1 inserted
+             the anchor matches again, so it inserts again -> "abbbc"
+```
 
-**Input basis.** The applied result is compared to the input. When they are
-equal, the operation reports `unchanged` instead of `applied`. An anchored
-insertion that has already been applied cannot find its anchor again and is
-refused as stale rather than inserted twice.
+The same fix with a snapshot of `"abc"` refuses at run 2, because the file now
+hashes to the hash of `"abbc"`. Both halves are asserted: the snapshot stops
+the repeat, and the anchor-only variant is kept as a test so the boundary is
+executable rather than a claim.
 
-**Applicability.** `apply_all` counts a file as applied only when its text
-changes. `apply_addressed` refuses a re-run of an anchored insertion whose
-anchor no longer matches.
+### Boundary
 
-**User flow.** Run the same manifest twice. The first run applies and reports
-the file. The second run finds either an unchanged text (reported `unchanged`)
-or a moved anchor (refused as stale). Neither is a second edit.
+- The snapshot identifies a **content state**, not an operation history. If a
+  file is edited back to exactly its earlier bytes, the snapshot matches again
+  and the fix applies. That is intended: "unchanged content" is the contract,
+  not "this command was not run before".
+- A fix without a snapshot keeps positional semantics and makes no re-run
+  claim. This is deliberate: a caller that omits the snapshot has told the
+  library it does not want the check.
+- The snapshot is 64 bits. It is a guard against a stale fix, not a
+  cryptographic signature; a deliberate collision is out of scope.
+- One snapshot covers one file. A transaction that touches several files needs
+  one snapshot per file, which is what `apply_all` expects.
 
-**Case.** Insert `XY` at offset 1 with anchor `Some("b")` (the text to the
-gives `aXYbc`. Second run on `aXYbc` finds the character at the insertion point
-is no longer `b` and refuses as stale; it does not insert a second `XY`.
+## Guarantee 2: a changed file is not edited at the wrong position
 
-## Guarantee 3: overlap and boundary
+### Mechanism
 
-**Input basis.** Byte ranges and a UTF-8 buffer.
+Two independent checks run before any text is produced: the file snapshot
+(above), and a **range anchor** `expected` — the exact text of the replaced
+range when the fix was produced. `check_addressed` reads the range and refuses
+on mismatch.
 
-**Applicability.** Two intersecting ranges are refused; a range that starts or
-ends inside a multi-byte character is refused.
+### Case
 
-**User flow.** `check` runs first, before any text is produced.
+Source `abc`, fix `{start:1, len:1, replacement:"X", expected:Some("b")}`. If
+the file became `adc` (same length, different character) the range anchor
+refuses it; positional application alone would have replaced `d`.
 
-**Case.** Fixes `{0..2}` and `{1..2}` on `abcd` are refused as overlapping.
-A fix `{1..2}` on `中` (bytes 0..3) is refused as not on a character boundary.
+### Boundary
 
-## What this does not promise
+A same-length edit outside the replaced range is caught by the snapshot, not by
+the range anchor. Neither check understands syntax: the library guarantees the
+bytes it replaces are the bytes it was told to replace, not that the edit is
+semantically correct.
 
-It does not re-run the compiler. There is no subprocess API in the MoonBit
-core library, so a fixpoint loop must be driven by a shell script. It does not
-parse MoonBit syntax, and it does not guarantee a fix is semantically correct,
-only that the text it replaces is the text it was told to replace.
+## Guarantee 3: no overlap, no broken character
+
+### Mechanism
+
+`check` refuses intersecting ranges and any range that starts or ends inside a
+multi-byte character, before any text is produced.
+
+### Case
+
+`{0..2}` and `{1..2}` on `abcd` are refused as overlapping. `{1..2}` on `中`
+(bytes 0..3) is refused as not on a character boundary.
+
+## Guarantee 4: all-or-nothing across files
+
+### Mechanism
+
+`apply_all` dry-checks every file first and reports the failing path. The
+caller writes only when it returns `AllApplied`. A refused transaction leaves
+every file untouched.
+
+### Case
+
+Two plans, the second with a range past the end of its file: the result is
+`Refused("b", ...)` and the first file is not written. A file whose text would
+not change is not counted as applied.
+
+## What is out of scope
+
+No compiler re-run (the MoonBit core library has no subprocess API, so a
+fixpoint loop must be driven by a shell script). No syntax parsing. No claim
+that a fix is semantically right — only that it lands where it was aimed, once.
 

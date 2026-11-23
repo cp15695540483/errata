@@ -2,6 +2,22 @@
 
 The format follows Keep a Changelog and the project uses Semantic Versioning.
 
+## 0.4.0
+
+### Changed
+
+- **Breaking:** `AddressedFix` gained a `snapshot` field. A fix can now carry the
+  hash of the whole file it was produced against; a re-run is recognised by the
+  bytes of the file rather than by a range anchor, so an insertion whose text
+  equals its anchor is no longer applied twice.
+- `snapshot_of(text)` exposes the hash so a caller can record it when producing
+  fixes.
+
+### Added
+
+- Tests for the equal-anchor insertion case, and for the anchor-only variant that
+  still repeats, so the boundary is executable.
+
 ## 0.3.0
 
 ### Added

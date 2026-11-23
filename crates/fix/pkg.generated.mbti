@@ -30,6 +30,8 @@ pub fn group(Array[@error-report.Fix]) -> Array[Group]
 
 pub fn parse_manifest(String) -> Array[FilePlan]
 
+pub fn snapshot_of(String) -> String
+
 pub fn sorted(Array[@error-report.Fix]) -> Array[@error-report.Fix]
 
 pub fn summary(Array[@error-report.Fix]) -> Summary
@@ -44,6 +46,7 @@ pub fn verify(Array[FilePlan], Array[String]) -> Int32
 pub(all) struct AddressedFix {
   fix : @error-report.Fix
   expected : String?
+  snapshot : String?
 }
 
 pub(all) enum ApplyOutcome {
