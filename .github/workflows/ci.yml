@@ -21,4 +21,11 @@ jobs:
       - run: moon check --target ${{ matrix.target }} --deny-warn
       - run: moon build --target ${{ matrix.target }}
       - run: moon test --target ${{ matrix.target }} --deny-warn
-
+  e2e:
+    runs-on: ubuntu-latest
+    needs: check
+    steps:
+      - uses: actions/checkout@v5
+      - name: Set up MoonBit
+        uses: ./.github/actions/moonbit
+      - run: bash tools/e2e.sh

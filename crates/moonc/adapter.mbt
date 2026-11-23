@@ -58,36 +58,57 @@ pub fn field(json : String, key : String) -> String? {
   while i < n && chars[i].to_int() == 32 {
     i = i + 1
   }
-  if i >= n || chars[i].to_int() != 34 {
+  if i >= n {
     return None
   }
-  let out : Array[Char] = []
-  let mut k = i + 1
-  let mut closed = false
-  while !closed && k < n {
-    let v = chars[k].to_int()
-    if v == 34 {
-      closed = true
-      k = k + 1
-    } else if v == 92 && k + 1 < n {
-      let e = chars[k + 1].to_int()
-      if e == 110 {
-        out.push("\n".to_array()[0])
-      } else if e == 116 {
-        out.push("\t".to_array()[0])
+  if chars[i].to_int() == 34 {
+    let out : Array[Char] = []
+    let mut k = i + 1
+    let mut closed = false
+    while !closed && k < n {
+      let v = chars[k].to_int()
+      if v == 34 {
+        closed = true
+        k = k + 1
+      } else if v == 92 && k + 1 < n {
+        let e = chars[k + 1].to_int()
+        if e == 110 {
+          out.push("\n".to_array()[0])
+        } else if e == 116 {
+          out.push("\t".to_array()[0])
+        } else {
+          out.push(chars[k + 1])
+        }
+        k = k + 2
       } else {
-        out.push(chars[k + 1])
+        out.push(chars[k])
+        k = k + 1
       }
-      k = k + 2
-    } else {
-      out.push(chars[k])
-      k = k + 1
     }
-  }
-  if closed {
-    Some(String::from_array(out))
+    if closed {
+      Some(String::from_array(out))
+    } else {
+      None
+    }
   } else {
-    None
+    let out : Array[Char] = []
+    let mut k = i
+    let mut digits = 0
+    while k < n {
+      let v = chars[k].to_int()
+      if v >= 48 && v <= 57 {
+        out.push(chars[k])
+        digits = digits + 1
+        k = k + 1
+      } else {
+        k = n
+      }
+    }
+    if digits == 0 {
+      None
+    } else {
+      Some(String::from_array(out))
+    }
   }
 }
 
