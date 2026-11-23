@@ -1,23 +1,27 @@
 ///|
-/// FNV-1a over the bytes, kept non-negative so the hex form is stable.
-fn fnv1a(bytes : Bytes, seed : Int32) -> Int32 {
+/// Standard FNV-1a, 32 bit, computed in Int64 so the multiply cannot overflow.
+///
+/// The offset basis 2166136261 does not fit a signed 32-bit Int, which is why
+/// this uses Int64 and masks back to 32 bits each round. The output matches the
+/// published FNV test vectors, asserted in the tests.
+fn fnv1a32(bytes : Bytes, seed : Int64) -> Int64 {
   let mut h = seed
   for i = 0; i < bytes.length(); i = i + 1 {
-    h = h ^ bytes[i].to_int()
-    h = h * 16777619
-    h = h & 0x7FFFFFFF
+    h = h ^ bytes[i].to_int().to_int64()
+    h = h * 16777619L
+    h = h & 0xFFFFFFFFL
   }
   h
 }
 
 ///|
-fn hex8(v : Int32) -> String {
+fn hex32(v : Int64) -> String {
   let digits = "0123456789abcdef"
   let ds = digits.to_array()
   let out : Array[Char] = []
   let mut shift = 28
   while shift >= 0 {
-    let nib = (v >> shift) & 0xF
+    let nib = ((v >> shift) & 0xFL).to_int()
     out.push(ds[nib])
     shift = shift - 4
   }
@@ -27,13 +31,12 @@ fn hex8(v : Int32) -> String {
 ///|
 /// A content snapshot of a whole text.
 ///
-/// Two independently seeded hashes are concatenated, so a re-run is recognised
-/// by the bytes of the file, not by a position. This is the check that a
-/// position anchor cannot make: an insertion whose text equals its anchor would
-/// still match the anchor after being applied, but it cannot match the snapshot.
+/// Two standard FNV-1a 32 hashes with different offset bases are concatenated,
+/// giving 64 bits of output and matching the published vector for the first
+/// half. A re-run is recognised by the bytes of the file, not by a position.
 pub fn snapshot_of(text : String) -> String {
   let bytes = @utf8.encode(text)
-  hex8(fnv1a(bytes, 0x811c9dc5)) + hex8(fnv1a(bytes, 0x9e3779b9))
+  hex32(fnv1a32(bytes, 2166136261L)) + hex32(fnv1a32(bytes, 2166136261L * 3L))
 }
 
 ///|

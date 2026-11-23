@@ -2,6 +2,17 @@
 
 The format follows Keep a Changelog and the project uses Semantic Versioning.
 
+## 0.4.1
+
+### Changed
+
+- `snapshot_of` now uses standard FNV-1a 32 (computed in Int64 so the offset
+  basis fits) with two offset bases, and the tests pin the published vectors
+  `811c9dc5`, `e40c292c`, `1a47e90b`, `bf9cf968`. The previous version masked to
+  31 bits each round, so it could not be checked against a reference.
+- README states that the CLI runs from a checkout and that the package ships the
+  library API, not a standalone executable.
+
 ## 0.4.0
 
 ### Changed

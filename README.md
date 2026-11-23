@@ -46,6 +46,10 @@ values directly, so a caller constructs them in their own code.
 
 ## Usage
 
+The commands below run from a checkout of this repository. The published package
+provides the library API; it does not install a standalone executable, because
+build artifacts are not part of a mooncakes package.
+
 Render one compiler record the toolchain prints:
 
 ```bash

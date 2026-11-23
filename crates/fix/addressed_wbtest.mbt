@@ -80,7 +80,16 @@ test "an anchored insertion refuses on re-run with a snapshot" {
 }
 
 ///|
-test "snapshot_of is stable and distinct for different texts" {
+test "fnv1a32 matches the published test vectors" {
+  // From the reference FNV test vector list: empty, "a", "abc", "foobar".
+  assert_eq(hex32(fnv1a32(@utf8.encode(""), 2166136261L)), "811c9dc5")
+  assert_eq(hex32(fnv1a32(@utf8.encode("a"), 2166136261L)), "e40c292c")
+  assert_eq(hex32(fnv1a32(@utf8.encode("abc"), 2166136261L)), "1a47e90b")
+  assert_eq(hex32(fnv1a32(@utf8.encode("foobar"), 2166136261L)), "bf9cf968")
+}
+
+///|
+test "snapshot_of is stable and separates texts" {
   assert_eq(snapshot_of("abc"), snapshot_of("abc"))
   assert_eq(snapshot_of("abc") != snapshot_of("abd"), true)
   assert_eq(snapshot_of("") != snapshot_of("a"), true)

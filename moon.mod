@@ -1,6 +1,6 @@
 name = "cp15695540483/errata"
 
-version = "0.4.0"
+version = "0.4.1"
 
 readme = "README.md"
 
