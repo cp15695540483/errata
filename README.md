@@ -58,7 +58,6 @@ values directly, so a caller constructs them in their own code.
 and refused alike: a refusal is data on stdout, not a process failure, so a CI
 step can inspect the report without special-casing the exit code.
 
-## Usage (examples)
 
 The commands below run from a checkout of this repository. The published package
 provides the library API; it does not install a standalone executable, because
@@ -115,15 +114,6 @@ match @fix.apply("let y = x + 1", fixes) {
 ## Publicity
 
 The project may be named and shown in contest publicity material with attribution.
-
-## Documentation
-
-- `docs/DESIGN.md` layering and invariants
-- `docs/SAFETY.md` what each guarantee needs, how it is used, where it stops
-- `docs/COMPARISON.md` what moonreport already covers
-- `docs/PORTING.md` dependency reuse
-- `docs/DEPENDENCIES.md` licences
-- `docs/TEST-MATRIX.md` public function to test references
 
 ## License
 
