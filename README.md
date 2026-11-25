@@ -116,6 +116,15 @@ match @fix.apply("let y = x + 1", fixes) {
 
 The project may be named and shown in contest publicity material with attribution.
 
+## Documentation
+
+- `docs/DESIGN.md` layering and invariants
+- `docs/SAFETY.md` what each guarantee needs, how it is used, where it stops
+- `docs/COMPARISON.md` what moonreport already covers
+- `docs/PORTING.md` dependency reuse
+- `docs/DEPENDENCIES.md` licences
+- `docs/TEST-MATRIX.md` public function to test references
+
 ## License
 
 MIT, see [LICENSE](LICENSE).

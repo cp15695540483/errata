@@ -20,3 +20,11 @@ test "render_line keeps the code" {
   }
   assert_eq(out.contains("4014"), true)
 }
+
+///|
+test "range_of_loc maps a single-line location" {
+  match range_of_loc("let y = x + 1", "1:9-1:10") {
+    Some(r) => assert_eq(r.0, 8)
+    None => assert_eq("none", "some")
+  }
+}

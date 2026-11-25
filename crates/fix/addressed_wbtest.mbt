@@ -94,3 +94,20 @@ test "snapshot_of is stable and separates texts" {
   assert_eq(snapshot_of("abc") != snapshot_of("abd"), true)
   assert_eq(snapshot_of("") != snapshot_of("a"), true)
 }
+
+///|
+fn refusal_text(r : Refusal?) -> String {
+  match r {
+    Some(reason) => describe(reason)
+    None => "none"
+  }
+}
+
+///|
+test "check_addressed refuses a stale snapshot" {
+  let fixes = [sfix(1, 1, "X", None, snapshot_of("abc"))]
+  assert_eq(
+    refusal_text(check_addressed("abd", fixes)),
+    "fix 0 was produced against a different text",
+  )
+}
