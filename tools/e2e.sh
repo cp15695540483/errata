@@ -79,6 +79,29 @@ assert_file "refused set leaves the file alone" "abc" "$TMP/t.mbt"
 out=$(moon run cmd/errata 2>&1)
 check "usage" "usage: errata" "$out"
 
+# 9. --help prints the same usage text
+out=$(moon run cmd/errata -- --help 2>&1)
+check "help flag" "usage: errata" "$out"
+check "help lists commands" "commands:" "$out"
+
+# 10. exit status is 0 for applied, unchanged and refused alike
+moon run cmd/errata -- fix "$TMP/nope.tsv" >/dev/null 2>&1
+if [ $? -eq 0 ]; then
+  pass=$((pass + 1))
+else
+  fail=$((fail + 1))
+  printf "FAIL %s\n" "a missing manifest must still exit 0"
+fi
+printf "abc\n" > "$TMP/e.mbt"
+printf "%s\t-1\t1\tX\n" "$TMP/e.mbt" > "$TMP/e.tsv"
+moon run cmd/errata -- fix "$TMP/e.tsv" --write >/dev/null 2>&1
+if [ $? -eq 0 ]; then
+  pass=$((pass + 1))
+else
+  fail=$((fail + 1))
+  printf "FAIL %s\n" "a refused set must still exit 0"
+fi
+
 rm -rf "$TMP"
 printf "\n%d passed, %d failed\n" "$pass" "$fail"
 [ "$fail" -eq 0 ]

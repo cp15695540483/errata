@@ -54,6 +54,12 @@ values directly, so a caller constructs them in their own code.
 
 ## Usage
 
+`errata --help` prints the command list. Exit status is 0 for applied, unchanged
+and refused alike: a refusal is data on stdout, not a process failure, so a CI
+step can inspect the report without special-casing the exit code.
+
+## Usage (examples)
+
 The commands below run from a checkout of this repository. The published package
 provides the library API; it does not install a standalone executable, because
 build artifacts are not part of a mooncakes package.

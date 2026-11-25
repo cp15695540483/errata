@@ -1,6 +1,6 @@
 ///|
 fn usage() -> String {
-  "usage: errata render <json-record> <source-text> | errata fix <manifest> [--write]"
+  "usage: errata render <json-record> <source-text> | errata fix <manifest> [--write]\n\ncommands:\n  render <json-record> <source-text>  print one compiler record against a source text\n  fix <manifest> [--write]            preview or apply a tab-separated fix manifest\n\noptions:\n  --help, -h                          print this message\n  --write                             write the result instead of printing a diff\n\nexit status: 0 for applied, unchanged and refused alike; a refusal is reported on\nstdout as data rather than as a process failure."
 }
 
 ///|
