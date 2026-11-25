@@ -20,4 +20,3 @@ test "render_line keeps the code" {
   }
   assert_eq(out.contains("4014"), true)
 }
-
