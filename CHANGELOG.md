@@ -2,6 +2,26 @@
 
 The format follows Keep a Changelog and the project uses Semantic Versioning.
 
+## 0.4.2
+
+### Added
+
+- `--help` lists the commands, the options and the exit-status policy;
+  `tools/e2e.sh` asserts it, and also asserts that a refused set and a missing
+  manifest still exit 0 so a CI step can read the report as data.
+- `docs/TEST-MATRIX.md` maps every public function to its test references; two
+  functions that were only reached through their callers now have their own
+  assertions.
+- `docs/DEPENDENCIES.md` and `docs/DEDUP.md` record the dependency licences and
+  the keyword searches behind the no-duplicate claim.
+- README gains `## Requirements` (toolchain version, backends, what the 64-bit
+  snapshot is and is not, the real input limit) and `## Publicity`.
+
+### Fixed
+
+- `field()` refused a numeric JSON value because it only accepted a quoted
+  string, so `error_code` never reached the rendered report.
+
 ## 0.4.1
 
 ### Changed
