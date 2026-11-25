@@ -34,6 +34,14 @@ safely. errata does that, and reuses error-report for everything else.
   `error-report/render` owns those.
 - It does not parse MoonBit syntax, run the compiler, or replace `moon fmt`.
 
+## Requirements
+
+- MoonBit toolchain `0.1.20261104` or newer; that is the version this project is developed and tested against.
+- `wasm-gc` and `js` are built and tested on every CI run. `native` needs a C toolchain: gcc on Linux, MSVC Build Tools with the Windows SDK on Windows.
+- `snapshot_of` is a 64-bit content hash used to refuse a stale fix set. It is a guard, not a cryptographic signature.
+- A file is read into memory as a whole, so the practical input limit is available memory rather than a fixed byte cap.
+- A manifest is UTF-8 TSV: `path<TAB>start<TAB>len<TAB>replacement`, byte offsets, `#` comments. Malformed lines are skipped.
+
 ## Install
 
 ```bash
@@ -97,6 +105,10 @@ match @fix.apply("let y = x + 1", fixes) {
 - [docs/DESIGN.md](docs/DESIGN.md) - layering, invariants and roadmap
 - [docs/PORTING.md](docs/PORTING.md) - what is reused, what is new, and why
 - [docs/adr](docs/adr) - decision records
+
+## Publicity
+
+The project may be named and shown in contest publicity material with attribution.
 
 ## License
 

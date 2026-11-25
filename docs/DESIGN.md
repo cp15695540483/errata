@@ -35,6 +35,14 @@ snippet layout in this repository.
    an edit.
 7. The core crates do no IO and read no environment.
 
+## Complexity
+
+- `check`: O(n log n) in the number of fixes, dominated by the stable sort by start offset; the overlap sweep after it is O(n).
+- `apply`: O(n + bytes), one pass over the sorted fixes and one pass over the text.
+- `snapshot_of`: O(bytes), two FNV-1a 32 passes over the encoded text.
+- `apply_all`: one `check` and one `apply` per file, so the sum over the transaction.
+- `diff`: O(bytes) to strip the common prefix and suffix, then O(changed lines).
+
 ## Roadmap
 
 - Fixpoint loop: after applying, re-collect diagnostics and apply again until
